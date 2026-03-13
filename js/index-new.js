@@ -1078,27 +1078,27 @@ function initTimeZone() {
 
    const timeSpan = document.querySelector("#timeSpan");
 
-   const optionsTime = {
-      timeZone: 'Europe/Amsterdam',
-      timeZoneName: 'short',
-      // year: 'numeric',
-      // month: 'numeric',
-      // day: 'numeric',
-      hour: '2-digit',
-      hour12: 'true',
-      minute: 'numeric',
-      // second: 'numeric',
-   };
-
-   const formatter = new Intl.DateTimeFormat([], optionsTime);
-   updateTime();
-   setInterval(updateTime, 1000);
+   function pad(num) {
+      return num < 10 ? '0' + num : num;
+   }
 
    function updateTime() {
-         const dateTime = new Date();
-         const formattedDateTime = formatter.format(dateTime);
-         timeSpan.textContent = formattedDateTime;
+      if (!timeSpan) return;
+      const now = new Date();
+      const utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+      const gmt1 = new Date(utc.getTime() + 1 * 3600000);
+
+      let hours = gmt1.getHours();
+      const suffix = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      if (hours === 0) hours = 12;
+      const minutes = pad(gmt1.getMinutes());
+
+      timeSpan.textContent = hours + ':' + minutes + ' ' + suffix + ' GMT+1';
    }
+
+   updateTime();
+   setInterval(updateTime, 60 * 1000);
    }
 
 }

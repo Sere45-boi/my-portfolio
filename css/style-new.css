@@ -659,6 +659,30 @@ main.touch .main-wrap {
       width: 100%;
    }
 
+.form-status {
+   font-size: 0.95rem;
+   margin-top: 0.8rem;
+   padding: 0.65rem 0.8rem;
+   border-radius: 4px;
+   min-height: 1.8rem;
+   color: var(--color-light);
+}
+
+.form-status--pending {
+   background-color: #ffc107;
+   color: #1f1f1f;
+}
+
+.form-status--success {
+   background-color: #28a745;
+   color: #ffffff;
+}
+
+.form-status--error {
+   background-color: #dc3545;
+   color: #ffffff;
+}
+
    .bottom-footer .flex-col:nth-child(1) {
       order: 3;
       padding: 0 var(--container-padding) calc(var(--gap-padding) * .75) var(--container-padding);

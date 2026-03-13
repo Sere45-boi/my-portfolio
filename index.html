@@ -5,13 +5,13 @@
       <title>Adeyemo Damilare • Freelance Developer</title>
       <meta name="description" content="Helping brands thrive in the digital world. Located in Lagos Nigeria. Delivering tailor-made digital designs and building interactive websites from scratch. © Code by Adeyemo">
       <meta property="og:title" content="Adeyemo Damilare • Freelance Developer">
-      <meta property="og:description" content="Helping brands thrive in the digital world. Located in Lagos Nigeria. Delivering tailor-made digital designs and building interactive websites from scratch. © Code by Dennis">
+      <meta property="og:description" content="Helping brands thrive in the digital world. Located in Lagos Nigeria. Delivering tailor-made digital designs and building interactive websites from scratch. © Code by Dami">
       <meta property="og:image" content="images/meta-image-dennis-snellenberg-860x540-crop-q72.jpg">
       <meta property="og:site_name" content="Adeyemo Damilare">
       <meta property="og:locale" content="en">
       <meta property="og:type" content="website">      
       <meta property="twitter:title" content="Adeyemo Damilare • Freelance Designer & Developer">
-      <meta property="twitter:description" content="Helping brands thrive in the digital world. Located in Lagos Nigeria. Delivering tailor-made digital designs and building interactive websites from scratch. © Code by Dennis">
+      <meta property="twitter:description" content="Helping brands thrive in the digital world. Located in Lagos Nigeria. Delivering tailor-made digital designs and building interactive websites from scratch. © Code by Dami">
       <meta property="twitter:image" content="https://ibb.co/jvWkzcFZ">
       <meta name="twitter:card" content="summary_large_image">
       <meta name="google" content="notranslate">
@@ -96,13 +96,6 @@
                                 </a>
                             </li>
                             <li class="btn btn-link">
-                                <a href="work.html" class="btn-click magnetic" data-strength="24" data-strength-text="12">
-                                <span class="btn-text">
-                                    <span class="btn-text-inner">Work</span>
-                                </span>
-                                </a>
-                            </li>
-                            <li class="btn btn-link">
                                 <a href="about.html" class="btn-click magnetic" data-strength="24" data-strength-text="12">
                                 <span class="btn-text">
                                     <span class="btn-text-inner">About</span>
@@ -161,7 +154,8 @@
             </g>
         </g>
     </g>
-</svg>         <div class="digital-ball">
+</svg>         
+<div class="digital-ball">
             <div class="overlay"></div>
             <div class="globe">
                <div class="globe-wrap">
@@ -180,19 +174,12 @@
         <div class="btn btn-link btn-left-top">
             <a href="#" class="btn-click magnetic" data-strength="20" data-strength-text="10">
             <span class="btn-text">
-                <div class="credit"><span>©</span></div><div class="cbd"><span class="code-by">Code by </span><span class="dennis"><span class="dennis-span">Dami</span> <span class="snellenberg">Snellenberg</span></span></div>
+                <div class="credit"><span>©</span></div><div class="cbd"><span class="code-by">Code by </span><span class="dennis"><span class="dennis-span">Dami</span> <span class="snellenberg">Adeyemo</span></span></div>
             </span>
             </a>
         </div>
     </div>
     <ul class="links-wrap">
-        <li class="btn btn-link">
-            <a href="work.html" class="btn-click magnetic" data-strength="20" data-strength-text="10">
-            <span class="btn-text">
-                <span class="btn-text-inner">Work</span>
-            </span>
-            </a>
-        </li>
         <li class="btn btn-link">
             <a href="about.html" class="btn-click magnetic" data-strength="20" data-strength-text="10">
             <span class="btn-text">
@@ -331,7 +318,7 @@
    <div class="container">    
       <div class="grid-after-btn">
          <div class="btn btn-normal">
-            <a href="work.html" class="btn-click magnetic" data-strength="25" data-strength-text="15">
+            <a href="#" class="btn-click magnetic" data-strength="25" data-strength-text="15">
                <div class="btn-fill"></div>
                <span class="btn-text">
                   <span class="btn-text-inner change">More work<div class="count-nr">9</div></span>
@@ -461,7 +448,7 @@
                                     </div>
                                     <div class="time">
                                         <h5>Local time</h5>
-                                        <p><span id="timeSpan">09:41 PM CET</span></p>
+                                        <p><span id="timeSpan">09:41 PM GMT+1</span></p>
                                     </div>
                                 </div>
                                 <div class="flex-col">
@@ -501,17 +488,40 @@
         <!-- <script src="https://cdn.jsdelivr.net/npm/@barba/core@2.9.7"></script> -->
         <script src="https://cdn.jsdelivr.net/npm/@barba/core@2.10.3"></script>
         <script src="js/lazyload.min.js"></script>
-        
         <script src="js/locomotive-scroll.min.js"></script>        <script defer="" src="js/index-new.js"></script>    
+         <script>
+        // Set current year and GMT+1 footer time
+        document.addEventListener('DOMContentLoaded', function() {
+            var yearSpan = document.getElementById('yearSpan');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
 
-                <script>
-                    // Set current year in footer
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var yearSpan = document.getElementById('yearSpan');
-                        if (yearSpan) {
-                            yearSpan.textContent = new Date().getFullYear();
-                        }
-                    });
-                </script>
+            var timeSpan = document.getElementById('timeSpan');
+            var targetOffset = 1; // GMT+1
+
+            function formatTwoDigits(num) {
+                return num < 10 ? '0' + num : num;
+            }
+
+            function updateTime() {
+                if (!timeSpan) return;
+                var now = new Date();
+                var utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+                var gmt1 = new Date(utc.getTime() + targetOffset * 3600000);
+
+                var hours = gmt1.getHours();
+                var suffix = hours >= 12 ? 'PM' : 'AM';
+                var displayHours = hours % 12;
+                if (displayHours === 0) displayHours = 12;
+
+                var minutes = formatTwoDigits(gmt1.getMinutes());
+                timeSpan.textContent = displayHours + ':' + minutes + ' ' + suffix + ' GMT+1';
+            }
+
+            updateTime();
+            setInterval(updateTime, 60 * 1000);
+        });
+        </script>
 
 </body></html>
