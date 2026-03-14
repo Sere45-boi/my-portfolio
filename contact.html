@@ -380,10 +380,23 @@
             var contactForm = document.querySelector('.form');
             var formStatus = document.getElementById('formStatus');
 
+            var formStatusTimeout = null;
+
             function setFormStatus(msg, type) {
                 if (!formStatus) return;
+                if (formStatusTimeout) {
+                    clearTimeout(formStatusTimeout);
+                    formStatusTimeout = null;
+                }
                 formStatus.textContent = msg;
                 formStatus.className = 'form-status ' + (type ? 'form-status--' + type : '');
+
+                if (type === 'success') {
+                    formStatusTimeout = setTimeout(function() {
+                        formStatus.textContent = '';
+                        formStatus.className = 'form-status';
+                    }, 30000);
+                }
             }
 
             if (contactForm) {
