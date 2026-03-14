@@ -662,19 +662,49 @@ main.touch .main-wrap {
 .form-status {
    display: block;
    width: 100%;
-   font-size: 0.95rem;
+   font-size: 1rem;
    margin-top: 1rem;
-   padding: 0.7rem 0.9rem;
+   padding: 0.8rem 1rem;
    border-radius: 8px;
    min-height: 2rem;
    color: #fff;
-   font-weight: 600;
+   font-weight: 700;
    letter-spacing: 0.01em;
    transition: opacity 0.25s ease, transform 0.25s ease;
-   box-shadow: 0 6px 22px rgba(0,0,0,0.08);
-   border: 1px solid transparent;
+   box-shadow: 0 6px 22px rgba(0,0,0,0.25);
+   border: 1px solid rgba(255, 255, 255, 0.2);
+   background-color: rgba(0, 0, 0, 0.75);
+   position: relative;
+   z-index: 25;
 }
 
+.form-status--pending {
+   color: #1f1f1f;
+   background-color: #ffeb99;
+   border-color: #ffe88a;
+}
+
+.form-status--success {
+   color: #e7f7eb;
+   background-color: #1f6f49;
+   border-color: #2fae72;
+}
+
+.form-status--error {
+   color: #ffe5e9;
+   background-color: #b10020;
+   border-color: #d52f4d;
+}
+
+.form-status:not(:empty) {
+   opacity: 1;
+   transform: translateY(0);
+}
+
+.form-status:empty {
+   opacity: 0;
+   transform: translateY(-8px);
+}
 .form-status--pending {
    background-color: #ffc107;
    color: #1f1f1f;
