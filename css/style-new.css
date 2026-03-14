@@ -660,15 +660,19 @@ main.touch .main-wrap {
    }
 
 .form-status {
+   display: block;
+   width: 100%;
    font-size: 0.95rem;
-   margin-top: 0.8rem;
-   padding: 0.65rem 0.8rem;
-   border-radius: 4px;
-   min-height: 1.8rem;
-   color: var(--color-light);
+   margin-top: 1rem;
+   padding: 0.7rem 0.9rem;
+   border-radius: 8px;
+   min-height: 2rem;
+   color: #fff;
    font-weight: 600;
-   letter-spacing: 0.02em;
+   letter-spacing: 0.01em;
    transition: opacity 0.25s ease, transform 0.25s ease;
+   box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+   border: 1px solid transparent;
 }
 
 .form-status--pending {
