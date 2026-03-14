@@ -7,12 +7,19 @@ module.exports = async (req, res) => {
     }
 
     let data = req.body;
+    const contentType = (req.headers['content-type'] || '').toLowerCase();
 
     if (!data || typeof data === 'string') {
-      try {
-        data = JSON.parse(req.body || '{}');
-      } catch (e) {
-        return res.status(400).json({ error: 'Invalid JSON payload' });
+      if (contentType.includes('application/x-www-form-urlencoded')) {
+        // Vercel may send body as raw string for form POSTs
+        const params = new URLSearchParams(req.body || '');
+        data = Object.fromEntries(params.entries());
+      } else {
+        try {
+          data = JSON.parse(req.body || '{}');
+        } catch (e) {
+          return res.status(400).json({ error: 'Invalid JSON payload' });
+        }
       }
     }
 
@@ -23,7 +30,11 @@ module.exports = async (req, res) => {
     const { name, email, company, service, message } = data;
 
     if (!name || !email || !message) {
-      return res.status(400).json({ error: 'Missing required fields (name, email, message)' });
+      const missing = [];
+      if (!name) missing.push('name');
+      if (!email) missing.push('email');
+      if (!message) missing.push('message');
+      return res.status(400).json({ error: 'Missing required fields', missing });
     }
 
     const smtpHost = process.env.SMTP_HOST;

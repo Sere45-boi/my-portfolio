@@ -392,14 +392,20 @@
                 contactForm.addEventListener('submit', async function(e) {
                     e.preventDefault();
 
-                    setFormStatus('Sending message...', 'pending');
                     var formData = {
-                        name: e.target.name.value,
-                        email: e.target.email.value,
-                        company: e.target.company.value,
-                        service: e.target.service.value,
-                        message: e.target.message.value,
+                        name: e.target.name.value.trim(),
+                        email: e.target.email.value.trim(),
+                        company: e.target.company.value.trim(),
+                        service: e.target.service.value.trim(),
+                        message: e.target.message.value.trim(),
                     };
+
+                    if (!formData.name || !formData.email || !formData.message) {
+                        setFormStatus('Please fill name/email/message', 'error');
+                        return;
+                    }
+
+                    setFormStatus('Sending message...', 'pending');
 
                     var submitButton = e.target.querySelector('.form-btn');
                     if (submitButton) submitButton.disabled = true;
