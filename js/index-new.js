@@ -519,9 +519,30 @@ function initScript() {
   initContactForm();
   initTimeZone();
   initFooterYear();
+  initExternalLinks();
   initLazyLoad();
   initPlayVideoInview();
   initScrolltriggerAnimations();
+}
+
+/**
+ * Make external social links open in a new tab safely
+ */
+function initExternalLinks() {
+  const selector = '.btn-link a, .btn-link-external a';
+  document.querySelectorAll(selector).forEach((link) => {
+    try {
+      const href = link.getAttribute('href');
+      if (!href || !/^https?:\/\//i.test(href)) return;
+      const url = new URL(href, window.location.origin);
+      if (url.origin !== window.location.origin) {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+      }
+    } catch (e) {
+      console.warn('initExternalLinks: invalid URL', link, e);
+    }
+  });
 }
 
 /**
