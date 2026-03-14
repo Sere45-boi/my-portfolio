@@ -81,6 +81,13 @@
                                 </a>
                             </li>
                             <li class="btn btn-link">
+                                <a href="https://github.com/Sere45-boi" class="btn-click magnetic" data-strength="24" data-strength-text="12">
+                                <span class="btn-text">
+                                    <span class="btn-text-inner">Github</span>
+                                </span>
+                                </a>
+                            </li>
+                            <li class="btn btn-link">
                                 <a href="about.html" class="btn-click magnetic" data-strength="24" data-strength-text="12">
                                 <span class="btn-text">
                                     <span class="btn-text-inner">About</span>
@@ -132,6 +139,13 @@
         </div>
     </div>
     <ul class="links-wrap">
+        <li class="btn btn-link">
+                                <a href="https://github.com/Sere45-boi" class="btn-click magnetic" data-strength="24" data-strength-text="12">
+                                <span class="btn-text">
+                                    <span class="btn-text-inner">Github</span>
+                                </span>
+                                </a>
+                            </li>
         <li class="btn btn-link">
             <a href="about.html" class="btn-click magnetic" data-strength="20" data-strength-text="10">
             <span class="btn-text">
@@ -250,6 +264,13 @@
             <h5>Socials</h5>
             <ul class="links-wrap">
                <li class="btn btn-link btn-link-external">
+                                    <a href="https://github.com/Sere45-boi/" target="_blank" class="btn-click magnetic" data-strength="20" data-strength-text="10">
+                                        <span class="btn-text">
+                                            <span class="btn-text-inner">Github</span>
+                                        </span>
+                                    </a>
+                                </li>
+               <li class="btn btn-link btn-link-external">
                   <a href="https://www.instagram.com/adeyemo_lare/" target="_blank" class="btn-click magnetic" data-strength="20" data-strength-text="10">
                      <span class="btn-text">
                         <span class="btn-text-inner">Instagram</span>
@@ -285,6 +306,13 @@
                                     <div class="socials">
                                         <h5>Socials</h5>
                                         <ul>
+                                            <li class="btn btn-link btn-link-external">
+                                                <a href="https://github.com/Sere45-boi" target="_blank" class="btn-click magnetic" data-strength="20" data-strength-text="10">
+                                                    <span class="btn-text">
+                                                        <span class="btn-text-inner">Github</span>
+                                                    </span>
+                                                </a>
+                                            </li>
                                             <li class="btn btn-link btn-link-external">
                                                 <a href="https://www.instagram.com/adeyemo_lare/" target="_blank" class="btn-click magnetic" data-strength="20" data-strength-text="10">
                                                     <span class="btn-text">
@@ -375,13 +403,20 @@
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(formData),
                         });
-                        var result = await res.json();
+
+                        var result;
+                        try {
+                            result = await res.json();
+                        } catch (jsonErr) {
+                            result = { error: res.statusText || 'Server error' };
+                        }
 
                         if (res.ok) {
                             setFormStatus('Message sent successfully. Thanks!', 'success');
                             e.target.reset();
                         } else {
-                            setFormStatus('Failed to send message: ' + (result.error || res.statusText), 'error');
+                            var errText = result && (result.error || result.detail) ? (result.error + (result.detail ? ': ' + result.detail : '')) : res.statusText;
+                            setFormStatus('Failed to send message: ' + errText, 'error');
                         }
                     } catch (err) {
                         console.error(err);

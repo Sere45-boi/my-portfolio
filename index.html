@@ -88,10 +88,18 @@
                         <h5>Navigation</h5>
                         <div class="stripe"></div>
                         <ul class="links-wrap">
+
                             <li class="btn btn-link active">
                                 <a href="#" class="btn-click magnetic" data-strength="24" data-strength-text="12">
                                 <span class="btn-text">
                                     <span class="btn-text-inner">Home</span>
+                                </span>
+                                </a>
+                            </li>
+                            <li class="btn btn-link">
+                                <a href="https://github.com/Sere45-boi" class="btn-click magnetic" data-strength="24" data-strength-text="12">
+                                <span class="btn-text">
+                                    <span class="btn-text-inner">Github</span>
                                 </span>
                                 </a>
                             </li>
@@ -116,6 +124,13 @@
                         <div class="socials">
                             <h5>Socials</h5>
                             <ul>
+                                <li class="btn btn-link btn-link-external">
+                                    <a href="https://github.com/Sere45-boi/" target="_blank" class="btn-click magnetic" data-strength="20" data-strength-text="10">
+                                        <span class="btn-text">
+                                            <span class="btn-text-inner">Github</span>
+                                        </span>
+                                    </a>
+                                </li>
                                 <li class="btn btn-link btn-link-external">
                                     <a href="https://www.instagram.com/adeyemo_lare/" target="_blank" class="btn-click magnetic" data-strength="20" data-strength-text="10">
                                         <span class="btn-text">
@@ -180,6 +195,13 @@
         </div>
     </div>
     <ul class="links-wrap">
+        <li class="btn btn-link">
+            <a href="https://github.com/Sere45-boi" class="btn-click magnetic" data-strength="24" data-strength-text="12">
+            <span class="btn-text">
+            <span class="btn-text-inner">Github</span>
+            </span>
+            </a>
+        </li>
         <li class="btn btn-link">
             <a href="about.html" class="btn-click magnetic" data-strength="20" data-strength-text="10">
             <span class="btn-text">
@@ -456,6 +478,13 @@
                                         <h5>Socials</h5>
                                         <ul>
                                             <li class="btn btn-link btn-link-external">
+                                                <a href="https://github.com/Sere45-boi" target="_blank" class="btn-click magnetic" data-strength="20" data-strength-text="10">
+                                                    <span class="btn-text">
+                                                        <span class="btn-text-inner">Github</span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="btn btn-link btn-link-external">
                                                 <a href="https://www.instagram.com/adeyemo_lare/" target="_blank" class="btn-click magnetic" data-strength="20" data-strength-text="10">
                                                     <span class="btn-text">
                                                         <span class="btn-text-inner">Instagram</span>
@@ -521,7 +550,64 @@
 
             updateTime();
             setInterval(updateTime, 60 * 1000);
+
+            // Contact form submit to Vercel function
+            var contactForm = document.querySelector('.form');
+            var formStatus = document.getElementById('formStatus');
+
+            function setFormStatus(msg, type) {
+                if (!formStatus) return;
+                formStatus.textContent = msg;
+                formStatus.className = 'form-status ' + (type ? 'form-status--' + type : '');
+            }
+
+            if (contactForm) {
+                contactForm.setAttribute('action', '/api/contact');
+
+                contactForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+
+                    setFormStatus('Sending message...', 'pending');
+                    var formData = {
+                        name: e.target.name.value,
+                        email: e.target.email.value,
+                        company: e.target.company.value,
+                        service: e.target.service.value,
+                        message: e.target.message.value,
+                    };
+
+                    var submitButton = e.target.querySelector('.form-btn');
+                    if (submitButton) submitButton.disabled = true;
+
+                    try {
+                        var res = await fetch('/api/contact', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(formData),
+                        });
+
+                        var result;
+                        try {
+                            result = await res.json();
+                        } catch (jsonErr) {
+                            result = { error: res.statusText || 'Server error' };
+                        }
+
+                        if (res.ok) {
+                            setFormStatus('Message sent successfully. Thanks!', 'success');
+                            e.target.reset();
+                        } else {
+                            var errText = result && (result.error || result.detail) ? (result.error + (result.detail ? ': ' + result.detail : '')) : res.statusText;
+                            setFormStatus('Failed to send message: ' + errText, 'error');
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        setFormStatus('An error occurred while sending your message.', 'error');
+                    } finally {
+                        if (submitButton) submitButton.disabled = false;
+                    }
+                });
+            }
         });
         </script>
-
 </body></html>

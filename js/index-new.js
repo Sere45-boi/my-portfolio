@@ -518,10 +518,22 @@ function initScript() {
   initTricksWords();
   initContactForm();
   initTimeZone();
+  initFooterYear();
   initLazyLoad();
   initPlayVideoInview();
   initScrolltriggerAnimations();
 }
+
+/**
+ * Footer year updater
+ */
+function initFooterYear() {
+  const yearSpan = document.getElementById('yearSpan');
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+  }
+}
+
 
 /**
 * Window Inner Height Check
