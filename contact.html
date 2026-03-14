@@ -391,10 +391,17 @@
                 formStatus.textContent = msg;
                 formStatus.className = 'form-status ' + (type ? 'form-status--' + type : '');
 
+                formStatus.style.display = 'block';
+                formStatus.style.opacity = '1';
+                formStatus.style.visibility = 'visible';
+                formStatus.style.zIndex = '999';
+
                 if (type === 'success') {
                     formStatusTimeout = setTimeout(function() {
                         formStatus.textContent = '';
                         formStatus.className = 'form-status';
+                        formStatus.style.opacity = '0';
+                        formStatus.style.visibility = 'hidden';
                     }, 30000);
                 }
             }
