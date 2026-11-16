@@ -4,7 +4,7 @@
   var PT = {
     "View": "Ver", "Menu": "Menu", "Navigation": "Navegação", "Home": "Início", "About": "Sobre",
     "Contact": "Contato", "Works": "Projetos", "Socials": "Redes sociais", "Located": "Localizado",
-    "in Lagos": "em Lagos", "Code by": "Código por", "Full-Stack": "Full-Stack", "Developer": "Desenvolvedor",
+    "in Lagos": "em Lagos", "Code by": "Código por", "Full-Stack": "Full-Stack", "Developer (CEO Tela)": "Desenvolvedor (CEO Tela)",
     "Building web applications, SaaS platforms and AI-powered business solutions that scale.": "Criando aplicações web, plataformas SaaS e soluções empresariais com IA que escalam.",
     "I'm a full-stack developer specialising in building web applications, SaaS platforms, and AI-powered business solutions using JavaScript, TypeScript, Next.js, React, and AI integrations.": "Sou um desenvolvedor full-stack especializado em criar aplicações web, plataformas SaaS e soluções empresariais com IA usando JavaScript, TypeScript, Next.js, React e integrações de IA.",
     "About me": "Sobre mim", "Recent work": "Trabalhos recentes", "More work": "Mais projetos",
@@ -93,22 +93,37 @@
   all();
 
   var css = document.createElement("style");
-  css.textContent = ".lang-toggle{position:fixed;top:1.2em;left:50%;transform:translateX(-50%);z-index:999;display:flex;gap:.2em;padding:.25em;border:1px solid rgba(255,255,255,.6);border-radius:2em;mix-blend-mode:difference;font:600 12px/1 Poppins,Arial,sans-serif}" +
-    ".lang-toggle button{all:unset;cursor:pointer;color:#fff;padding:.5em .9em;border-radius:2em;transition:all .3s}" +
-    ".lang-toggle button[aria-pressed=true]{background:#fff;color:#000}";
+  css.textContent = ".lang-li{display:flex!important;align-items:center;margin:0 .4em;list-style:none}" +
+    ".lang-toggle{display:flex;gap:.15em;padding:.2em;border:1px solid currentColor;border-radius:2em;font:600 11px/1 Poppins,Arial,sans-serif;color:inherit}" +
+    ".lang-toggle button{all:unset;cursor:pointer;padding:.5em .8em;border-radius:2em;opacity:.5;transition:all .3s}" +
+    ".lang-toggle button[aria-pressed=true]{opacity:1;background:rgba(128,128,128,.35)}";
   document.head.appendChild(css);
-  var box = document.createElement("div");
-  box.className = "lang-toggle";
-  box.setAttribute("role", "group"); box.setAttribute("aria-label", "Language");
-  ["en", "pt"].forEach(function (l) {
-    var b = document.createElement("button");
-    b.type = "button"; b.textContent = l.toUpperCase(); b.setAttribute("aria-pressed", l === lang);
-    b.onclick = function () {
-      if (l === lang) return;
-      try { localStorage.setItem("lang", l); } catch (e) {}
-      location.reload(); // reload: page scripts split/animate text, so re-render from clean markup
-    };
-    box.appendChild(b);
-  });
-  document.body.appendChild(box);
+  function toggle() {
+    var li = document.createElement("li");
+    li.className = "lang-li";
+    var box = document.createElement("div");
+    box.className = "lang-toggle";
+    box.setAttribute("role", "group"); box.setAttribute("aria-label", "Language");
+    ["en", "pt"].forEach(function (l) {
+      var b = document.createElement("button");
+      b.type = "button"; b.setAttribute("aria-pressed", l === lang);
+      b.innerHTML = "<span>" + l.toUpperCase() + "</span>";
+      b.onclick = function () {
+        if (l === lang) return;
+        try { localStorage.setItem("lang", l); } catch (e) {}
+        location.reload(); // reload: page scripts split/animate text, so re-render from clean markup
+      };
+      box.appendChild(b);
+    });
+    li.appendChild(box);
+    return li;
+  }
+  // put the toggle in the top nav, right after the page links (before the mobile Menu item); barba swaps navs so re-check on DOM changes
+  function mount() {
+    document.querySelectorAll(".nav-bar .links-wrap").forEach(function (ul) {
+      if (!ul.querySelector(".lang-li")) ul.insertBefore(toggle(), ul.lastElementChild);
+    });
+  }
+  mount();
+  new MutationObserver(mount).observe(document.body, { childList: true, subtree: true });
 })();
